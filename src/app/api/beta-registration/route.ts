@@ -54,11 +54,14 @@ export async function POST(request: Request) {
       return Response.json({ ok: false, code: "database_error" }, { status: 500 });
     }
 
-    const confirmationSent = inserted
-      ? await sendRegistrationConfirmation(inserted.id, registration.data.name, registration.data.email)
-      : false;
+    const [confirmationSent, adminNotificationSent] = inserted
+      ? await Promise.all([
+          sendRegistrationConfirmation(inserted.id, registration.data.name, registration.data.email),
+          sendAdminRegistrationNotification(inserted.id, registration.data),
+        ])
+      : [false, false];
 
-    return Response.json({ ok: true, confirmationSent }, { status: 201 });
+    return Response.json({ ok: true, confirmationSent, adminNotificationSent }, { status: 201 });
   } catch {
     return Response.json({ ok: false, code: "invalid_request" }, { status: 400 });
   }
@@ -115,6 +118,49 @@ async function sendRegistrationConfirmation(registrationId: string, name: string
   } catch (error) {
     console.error(
       "Resend confirmation threw",
+      error instanceof Error ? { name: error.name, message: error.message } : { message: "Unknown error" },
+    );
+    return false;
+  }
+}
+
+async function sendAdminRegistrationNotification(registrationId: string, registration: Registration) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  const adminEmail = process.env.BETA_ADMIN_EMAIL;
+  if (!apiKey || !from || !adminEmail) return false;
+
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send(
+      {
+        from,
+        to: [adminEmail],
+        replyTo: registration.email,
+        subject: `【talkLog】β版に新規登録がありました（${registration.name}さん）`,
+        text: [
+          "talkLog β版に新規登録がありました。",
+          "",
+          `名前: ${registration.name}`,
+          `メールアドレス: ${registration.email}`,
+          `学習言語: ${registration.languages.join(", ")}`,
+          `使用端末: ${registration.device}`,
+          `コメント: ${registration.comment ?? "なし"}`,
+          `登録ID: ${registrationId}`,
+        ].join("\n"),
+      },
+      { idempotencyKey: `beta-registration-admin/${registrationId}` },
+    );
+    if (error) {
+      console.error("Resend admin notification failed", {
+        name: error.name,
+        message: error.message,
+      });
+    }
+    return !error;
+  } catch (error) {
+    console.error(
+      "Resend admin notification threw",
       error instanceof Error ? { name: error.name, message: error.message } : { message: "Unknown error" },
     );
     return false;

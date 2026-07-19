@@ -40,6 +40,7 @@ GitHub等へプッシュしてVercelでリポジトリをImportし、Framework P
 | `SUPABASE_SECRET_KEY` | β登録APIが使うサーバー専用Secret key |
 | `RESEND_API_KEY` | 登録確認メール送信用のResend API key |
 | `RESEND_FROM_EMAIL` | Resendで認証済みドメインの送信元 |
+| `BETA_ADMIN_EMAIL` | β版へ新規登録があったときの管理者通知先（任意） |
 | `NEXT_PUBLIC_X_URL` | Xのリンク |
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Instagramのリンク |
 | `NEXT_PUBLIC_GA_ID` | 将来のGoogle Analytics用 |
