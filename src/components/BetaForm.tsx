@@ -5,6 +5,13 @@ import { FormEvent, useState } from "react";
 type State = "idle" | "sending" | "success" | "error" | "duplicate";
 const languages = ["英語", "スペイン語", "韓国語", "中国語", "その他"];
 
+function trackBetaRegistration() {
+  const analyticsWindow = window as typeof window & {
+    gtag?: (command: "event", eventName: string, parameters?: Record<string, string>) => void;
+  };
+  analyticsWindow.gtag?.("event", "sign_up", { method: "beta_registration" });
+}
+
 export function BetaForm() {
   const [state, setState] = useState<State>("idle");
   const [languageError, setLanguageError] = useState(false);
@@ -39,6 +46,7 @@ export function BetaForm() {
       }
       if (!response.ok) throw new Error("Submission failed");
 
+      trackBetaRegistration();
       setState("success");
       form.reset();
     } catch {
