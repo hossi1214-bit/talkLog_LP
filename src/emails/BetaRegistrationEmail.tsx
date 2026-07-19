@@ -11,9 +11,8 @@ export function BetaRegistrationEmail({ name }: Props) {
         <p style={{ lineHeight: 1.8 }}>β版の準備が整い次第、このメールアドレスへご案内します。公開まで今しばらくお待ちください。</p>
         <div style={{ backgroundColor: "#e8f3ed", borderRadius: "12px", color: "#1f5548", margin: "28px 0", padding: "18px", textAlign: "center" }}>今日も30秒だけ、外国語で話してみよう。</div>
         <p style={{ color: "#66756f", fontSize: "13px", lineHeight: 1.7, marginTop: "30px" }}>このメールはtalkLog β版へ登録された方に自動送信しています。お心当たりがない場合は、このメールを破棄してください。</p>
-        <p style={{ color: "#66756f", fontSize: "13px", marginBottom: 0 }}>talkLog<br />ConectaMente Labs</p>
+        <p style={{ color: "#66756f", fontSize: "13px", marginBottom: 0 }}>talkLog</p>
       </div>
     </div>
   );
 }
-
