@@ -38,6 +38,8 @@ GitHub等へプッシュしてVercelでリポジトリをImportし、Framework P
 | `NEXT_PUBLIC_SITE_URL` | canonical・sitemap・robotsの公開URL |
 | `NEXT_PUBLIC_SUPABASE_URL` | SupabaseプロジェクトURL |
 | `SUPABASE_SECRET_KEY` | β登録APIが使うサーバー専用Secret key |
+| `RESEND_API_KEY` | 登録確認メール送信用のResend API key |
+| `RESEND_FROM_EMAIL` | Resendで認証済みドメインの送信元 |
 | `NEXT_PUBLIC_X_URL` | Xのリンク |
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Instagramのリンク |
 | `NEXT_PUBLIC_GA_ID` | 将来のGoogle Analytics用 |

@@ -1,7 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
+import { Resend } from "resend";
+import { BetaRegistrationEmail } from "@/emails/BetaRegistrationEmail";
 
 const allowedLanguages = new Set(["英語", "スペイン語", "韓国語", "中国語", "その他"]);
-const allowedDevices = new Set(["iPhone", "Android", "両方"]);
+const allowedDevices = new Set(["iPhone"]);
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type Registration = {
@@ -38,7 +40,11 @@ export async function POST(request: Request) {
       auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     });
 
-    const { error } = await supabase.from("beta_registrations").insert(registration.data);
+    const { data: inserted, error } = await supabase
+      .from("beta_registrations")
+      .insert(registration.data)
+      .select("id")
+      .single<{ id: string }>();
 
     if (error?.code === "23505") {
       return Response.json({ ok: false, code: "duplicate_email" }, { status: 409 });
@@ -48,7 +54,11 @@ export async function POST(request: Request) {
       return Response.json({ ok: false, code: "database_error" }, { status: 500 });
     }
 
-    return Response.json({ ok: true }, { status: 201 });
+    const confirmationSent = inserted
+      ? await sendRegistrationConfirmation(inserted.id, registration.data.name, registration.data.email)
+      : false;
+
+    return Response.json({ ok: true, confirmationSent }, { status: 201 });
   } catch {
     return Response.json({ ok: false, code: "invalid_request" }, { status: 400 });
   }
@@ -79,3 +89,24 @@ function readString(formData: FormData, key: string) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+async function sendRegistrationConfirmation(registrationId: string, name: string, email: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (!apiKey || !from) return false;
+
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send(
+      {
+        from,
+        to: [email],
+        subject: "talkLog β版へのご登録ありがとうございます",
+        react: BetaRegistrationEmail({ name }),
+      },
+      { idempotencyKey: `beta-registration/${registrationId}` },
+    );
+    return !error;
+  } catch {
+    return false;
+  }
+}
