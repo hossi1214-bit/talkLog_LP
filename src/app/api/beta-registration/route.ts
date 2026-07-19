@@ -105,8 +105,18 @@ async function sendRegistrationConfirmation(registrationId: string, name: string
       },
       { idempotencyKey: `beta-registration/${registrationId}` },
     );
+    if (error) {
+      console.error("Resend confirmation failed", {
+        name: error.name,
+        message: error.message,
+      });
+    }
     return !error;
-  } catch {
+  } catch (error) {
+    console.error(
+      "Resend confirmation threw",
+      error instanceof Error ? { name: error.name, message: error.message } : { message: "Unknown error" },
+    );
     return false;
   }
 }
