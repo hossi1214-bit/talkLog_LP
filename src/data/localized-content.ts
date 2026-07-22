@@ -3,6 +3,7 @@ export type PublicLocale = "en" | "es";
 export const localizedContent = {
   en: {
     meta: { title: "talkLog — Turn self-talk into language learning", description: "Speak for just 30 seconds. talkLog uses AI to suggest more natural expressions and turns your daily voice log into language practice." },
+    announcement: "The talkLog website is now available in Japanese, English, and Spanish.",
     hero: { badge: "Beta testers wanted", title: "Turn self-talk into", strong: "language learning.", lead: "Just speak for 30 seconds.\nAI suggests more natural ways to express yourself.", note: "Designed for learners of English, Spanish, Korean, Chinese, and more.", primary: "Join the beta →", secondary: "Get release updates", tiny: "Free registration · Unsubscribe anytime", bubble: "Just 30 seconds today.\nGive it a try!" },
     trust: ["🎙️ Voice logs", "✨ AI feedback", "🌍 Multiple languages", "🔒 Thoughtful data handling"],
     challenges: { title: "Do any of these sound familiar?", subtitle: "Small barriers that make language practice hard to sustain.", items: ["I study, but rarely get a chance to speak.", "I’m not sure whether my expressions sound natural.", "No one is available to correct what I write or say.", "Online lessons are too demanding to do every day.", "My learning records are scattered, so progress is hard to see.", "I want a daily habit, but I can’t find the time."], solution: "talkLog helps with those challenges.", solutionText: "Your daily self-talk becomes language practice as it is." },
@@ -20,6 +21,7 @@ export const localizedContent = {
   },
   es: {
     meta: { title: "talkLog — Convierte tus monólogos en aprendizaje de idiomas", description: "Habla solo 30 segundos. talkLog usa IA para sugerir expresiones más naturales y convertir tu registro de voz diario en práctica de idiomas." },
+    announcement: "La web de talkLog ya está disponible en japonés, inglés y español.",
     hero: { badge: "Buscamos testers beta", title: "Convierte tus monólogos en", strong: "aprendizaje de idiomas.", lead: "Habla solo 30 segundos.\nLa IA sugiere formas más naturales de expresarte.", note: "Pensado para estudiantes de inglés, español, coreano, chino y más.", primary: "Únete a la beta →", secondary: "Recibe novedades", tiny: "Registro gratuito · Cancela cuando quieras", bubble: "Solo 30 segundos hoy.\n¡Pruébalo!" },
     trust: ["🎙️ Registro de voz", "✨ Corrección con IA", "🌍 Varios idiomas", "🔒 Gestión responsable de datos"],
     challenges: { title: "¿Te resulta familiar?", subtitle: "Pequeñas barreras que dificultan mantener el aprendizaje.", items: ["Estudio, pero casi nunca tengo ocasión de hablar.", "No sé si mis expresiones suenan naturales.", "No tengo a nadie que corrija lo que digo o escribo.", "Las clases en línea son difíciles de mantener a diario.", "Mis registros están dispersos y no veo mi progreso.", "Quiero crear un hábito, pero no encuentro tiempo."], solution: "talkLog te ayuda con esos problemas.", solutionText: "Tus monólogos diarios se convierten directamente en práctica del idioma." },
