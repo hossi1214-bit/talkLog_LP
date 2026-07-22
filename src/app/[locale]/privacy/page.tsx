@@ -1,0 +1,13 @@
+import type { Metadata } from "next";
+import { LegalPage } from "@/components/LegalPage";
+import { getPublicLocale, publicLocales } from "@/i18n/locale";
+
+type Props = { params: Promise<{ locale: string }> };
+export function generateStaticParams() { return publicLocales.map(locale => ({ locale })); }
+export async function generateMetadata({ params }: Props): Promise<Metadata> { const locale = getPublicLocale((await params).locale); return { title: locale === "en" ? "Privacy Policy | talkLog" : "Política de privacidad | talkLog", alternates: { canonical: `/${locale}/privacy`, languages: { ja: "/privacy", en: "/en/privacy", es: "/es/privacy" } } }; }
+
+export default async function Privacy({ params }: Props) {
+  const locale = getPublicLocale((await params).locale);
+  if (locale === "en") return <LegalPage locale="en" title="Privacy Policy"><h2>1. Information we collect</h2><p>When you register for the beta, we may collect your name or nickname, email address, learning languages, device, and optional comments.</p><h2>2. How we use information</h2><p>We use this information to provide beta access, send important notices, and improve the service.</p><h2>3. Analytics</h2><p>We use Google Analytics to understand site usage and improve our service. Google Analytics uses cookies and similar technologies to collect information such as pages viewed, device type, and browser. We do not send names or email addresses submitted through the registration form to Google Analytics.</p><h2>4. Third-party disclosure</h2><p>We do not provide personal information to third parties without consent, except where required by law.</p><h2>5. Contact</h2><p>For privacy questions, contact <a href="mailto:support@talklog.app">support@talklog.app</a>.</p></LegalPage>;
+  return <LegalPage locale="es" title="Política de privacidad"><h2>1. Información que recopilamos</h2><p>Al registrarte en la beta, podemos recopilar tu nombre o apodo, correo electrónico, idiomas de estudio, dispositivo y comentarios opcionales.</p><h2>2. Cómo usamos la información</h2><p>Usamos esta información para ofrecer acceso a la beta, enviar avisos importantes y mejorar el servicio.</p><h2>3. Analítica</h2><p>Utilizamos Google Analytics para comprender el uso del sitio y mejorar el servicio. Google Analytics usa cookies y tecnologías similares para recopilar datos como páginas visitadas, dispositivo y navegador. No enviamos a Google Analytics nombres ni correos introducidos en el formulario.</p><h2>4. Comunicación a terceros</h2><p>No proporcionamos datos personales a terceros sin consentimiento, salvo cuando la ley lo exija.</p><h2>5. Contacto</h2><p>Para consultas de privacidad, escribe a <a href="mailto:support@talklog.app">support@talklog.app</a>.</p></LegalPage>;
+}
